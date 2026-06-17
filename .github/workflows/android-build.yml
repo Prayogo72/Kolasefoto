@@ -1,12 +1,9 @@
-name: Build Android APK
+name: Build Android App
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,42 +13,37 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Install Java JDK
+      # PERBAIKAN 1: Menggunakan Java JDK 21
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
+          java-version: '21'
           distribution: 'zulu'
-          java-version: '17'
 
+      # PERBAIKAN 2: Install dependensi dari package.json yang baru dibuat
       - name: Install Dependencies
-        run: |
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+        run: npm install
 
-      - name: Setup Capacitor and Android Platform
+      # PERBAIKAN 3: Membuat folder android & sinkronisasi Capacitor secara otomatis
+      - name: Capacitor Sync
         run: |
-          if [ ! -f capacitor.config.json ] && [ ! -f capacitor.config.ts ]; then
-            npx cap init "Kolase 5S App" "com.logisteed.kolase5s" --web-dir=www
-          fi
           npx cap add android
-
-      - name: Sync Web Assets to Android
-        run: |
           npx cap sync android
 
+      # PROSES BUILD: Menjalankan Gradle build di dalam folder android yang sudah digenerate
       - name: Build Android App via Gradle
         run: |
           cd android
-          chmod +x gradlew
           ./gradlew assembleDebug
 
+      # OPSIONAL: Upload hasil APK agar bisa kamu download setelah build selesai
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: kolase-5s-debug-apk
+          name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
-          
