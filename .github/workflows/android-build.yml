@@ -29,7 +29,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm install @capacitor/core @capacitor/android
+          npm init -y
+          # Menambahkan @capacitor/cli agar perintah npx cap bisa dieksekusi server
+          npm install @capacitor/core @capacitor/cli @capacitor/android
 
       - name: Sync Web Assets to Android
         run: |
