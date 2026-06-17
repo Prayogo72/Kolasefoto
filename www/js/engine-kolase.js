@@ -116,3 +116,28 @@ function drawImageCenterCrop(ctx, img, x, y, w, h) {
 
     ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
 }
+
+async function simpanHasilKolase() {
+    // 1. Ambil ID canvas tempat kolase fotomu digabungkan
+    const canvas = document.getElementById('canvasKolase'); // <--- Ganti sesuai ID canvas kolasemu
+    if (!canvas) {
+        alert("Canvas kolase tidak ditemukan!");
+        return;
+    }
+
+    try {
+        const dataUrl = canvas.toDataURL("image/png");
+        const base64Content = dataUrl.split(',')[1];
+
+        // 2. Simpan lewat jembatan native resmi Android
+        await window.Capacitor.Plugins.Filesystem.writeFile({
+            path: 'Hasil_Kolase_' + Date.now() + '.png',
+            data: base64Content,
+            directory: 'DOWNLOADS' // Biar langsung masuk folder Download HP dan muncul di Galeri
+        });
+
+        alert("Foto kolase sukses disimpan ke folder Download!");
+    } catch (error) {
+        alert("Gagal menyimpan kolase: " + error.message);
+    }
+}
