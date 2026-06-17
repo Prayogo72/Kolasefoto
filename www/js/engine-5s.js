@@ -160,3 +160,27 @@ function hapusBarisTerakhir5S() {
     document.getElementById('status5S').innerText = `Total Terisi: ${data5S.length} / 10 Baris`;
     renderTable5S();
 }
+
+async function simpanGambar5S() {
+    const canvas = document.getElementById('canvas5S'); // Pastikan ID canvas-mu sudah sesuai
+    if (!canvas) {
+        alert("Canvas tidak ditemukan!");
+        return;
+    }
+
+    try {
+        const dataUrl = canvas.toDataURL("image/png");
+        const base64Content = dataUrl.split(',')[1];
+
+        // Memanggil fungsi native resmi Android lewat Capacitor
+        await window.Capacitor.Plugins.Filesystem.writeFile({
+            path: 'Laporan_5S_' + Date.now() + '.png',
+            data: base64Content,
+            directory: 'DOWNLOADS' // Gambar otomatis masuk folder Download HP
+        });
+
+        alert("Gambar sukses disimpan ke folder Download!");
+    } catch (error) {
+        alert("Gagal menyimpan file: " + error.message);
+    }
+}
