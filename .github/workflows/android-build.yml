@@ -56,7 +56,7 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Upload APK Artifact
-        uses: actions/actions-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: kolase-5s-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
