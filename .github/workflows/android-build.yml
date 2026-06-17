@@ -30,8 +30,16 @@ jobs:
       - name: Install Dependencies
         run: |
           npm init -y
-          # Menambahkan @capacitor/cli agar perintah npx cap bisa dieksekusi server
           npm install @capacitor/core @capacitor/cli @capacitor/android
+
+      - name: Setup Capacitor and Android Platform
+        run: |
+          # Buat konfigurasi dummy jika tidak ada di root agar CLI tidak komplain
+          if [ ! -f capacitor.config.json ] && [ ! -f capacitor.config.ts ]; then
+            npx cap init "Kolase 5S App" "com.logisteed.kolase5s" --web-dir=www
+          fi
+          # Paksa tambahkan platform android langsung di server
+          npx cap add android
 
       - name: Sync Web Assets to Android
         run: |
