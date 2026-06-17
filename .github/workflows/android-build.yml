@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '21'
+          java-version: '17'
 
       - name: Create Web Assets Directory
         run: |
@@ -37,16 +37,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/core @capacitor/android
 
-      - name: Initialize Capacitor Config
+      - name: Sync Web Assets to Android
         run: |
-          npx cap init "Kolase 5S App" "com.logisteed.kolase5s" --web-dir=www
-
-      - name: Add Android Platform and Sync
-        run: |
-          npx cap add android
           npx cap sync android
 
       - name: Build Android App via Gradle
