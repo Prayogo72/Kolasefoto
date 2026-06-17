@@ -39,6 +39,11 @@ jobs:
         run: |
           npm install @capacitor/core @capacitor/android
 
+      - name: Force Setup Gradle Wrapper
+        run: |
+          cd android
+          gradle wrapper --gradle-version 8.2
+
       - name: Sync Web Assets to Android
         run: |
           npx cap sync android
