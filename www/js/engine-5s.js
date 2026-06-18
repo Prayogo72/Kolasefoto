@@ -162,7 +162,7 @@ function hapusBarisTerakhir5S() {
 }
 
 async function simpanGambar5S() {
-    const canvas = document.getElementById('canvas5S'); // Pastikan ID canvas-mu sudah sesuai
+    const canvas = document.getElementById('canvas5S'); // Pastikan ID ini sesuai dengan di HTML kamu
     if (!canvas) {
         alert("Canvas tidak ditemukan!");
         return;
@@ -171,15 +171,21 @@ async function simpanGambar5S() {
     try {
         const dataUrl = canvas.toDataURL("image/png");
         const base64Content = dataUrl.split(',')[1];
+        const { Filesystem } = window.Capacitor.Plugins;
 
-        // Memanggil fungsi native resmi Android lewat Capacitor
-        await window.Capacitor.Plugins.Filesystem.writeFile({
+        if (!Filesystem) {
+            alert("Plugin Filesystem native tidak terdeteksi.");
+            return;
+        }
+
+        await Filesystem.writeFile({
             path: 'Laporan_5S_' + Date.now() + '.png',
             data: base64Content,
-            directory: 'DOWNLOADS' // Gambar otomatis masuk folder Download HP
+            directory: 'DOWNLOADS'
         });
 
         alert("Gambar sukses disimpan ke folder Download!");
+
     } catch (error) {
         alert("Gagal menyimpan file: " + error.message);
     }
