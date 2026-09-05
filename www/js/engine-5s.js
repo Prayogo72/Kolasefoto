@@ -246,34 +246,5 @@ if (btnSimpan5S) {
     downloadCanvas('canvas5S', `5S_${lokasi}`);
   });
 }
-// Sambungkan ke fungsi library lokasi bawaan proyek
-const btnPilihLokasi5S = document.getElementById('btnPilihLokasi5S');
-if (btnPilihLokasi5S) {
-  btnPilihLokasi5S.addEventListener('click', function () {
-    // Memanggil fungsi modal/picker lokasi dari library-lokasi.js
-    if (typeof bukaModalLokasi === 'function') {
-      bukaModalLokasi((lokasiTerpilih) => {
-        if (inputLokasi5S) {
-          inputLokasi5S.value = lokasiTerpilih;
-          render5S();
-        }
-      });
-    } else if (typeof pilihLokasi === 'function') {
-      pilihLokasi((lokasiTerpilih) => {
-        if (inputLokasi5S) {
-          inputLokasi5S.value = lokasiTerpilih;
-          render5S();
-        }
-      });
-    } else {
-      // Prompt cadangan jika function library belum terdaftar
-      const input = prompt("Masukkan kode lokasi:", inputLokasi5S ? inputLokasi5S.value : "");
-      if (input !== null && inputLokasi5S) {
-        inputLokasi5S.value = input.trim();
-        render5S();
-      }
-    }
-  });
-}
 
 document.addEventListener('DOMContentLoaded', init5SCanvas);
